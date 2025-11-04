@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, FlatList, ActivityIndicator, RefreshControl } f
 import { useEffect, useState } from 'react';
 import { getCupons } from '../services/firestore';
 import { CupomFiscal } from '../types/Cupom';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function CuponsScreen() {
+  const { theme } = useTheme();
   const [cupons, setCupons] = useState<CupomFiscal[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,32 +35,32 @@ export default function CuponsScreen() {
     const dataFormatada = new Date(item.createdAt).toLocaleDateString('pt-BR');
     
     return (
-      <View style={styles.cupomCard}>
-        <Text style={styles.estabelecimento}>{item.estabelecimento}</Text>
-        <Text style={styles.valor}>R$ {item.valorTotal.toFixed(2)}</Text>
-        <Text style={styles.data}>Data: {dataFormatada}</Text>
-        <Text style={styles.categoria}>Categoria: {item.categoria}</Text>
-        {item.data && <Text style={styles.dataCupom}>Data do cupom: {item.data}</Text>}
+      <View style={[styles.cupomCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+        <Text style={[styles.estabelecimento, { color: theme.colors.text }]}>{item.estabelecimento}</Text>
+        <Text style={[styles.valor, { color: theme.colors.primary }]}>R$ {item.valorTotal.toFixed(2)}</Text>
+        <Text style={[styles.data, { color: theme.colors.textSecondary }]}>Data: {dataFormatada}</Text>
+        <Text style={[styles.categoria, { color: theme.colors.textSecondary }]}>Categoria: {item.categoria}</Text>
+        {item.data && <Text style={[styles.dataCupom, { color: theme.colors.textSecondary }]}>Data do cupom: {item.data}</Text>}
       </View>
     );
   };
 
   if (loading) {
     return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={styles.loadingText}>Carregando cupons...</Text>
+      <View style={[styles.centerContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Carregando cupons...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Meus Cupons</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.text }]}>Meus Cupons</Text>
       {cupons.length === 0 ? (
         <View style={styles.centerContainer}>
-          <Text style={styles.emptyText}>Nenhum cupom cadastrado ainda.</Text>
-          <Text style={styles.emptySubtext}>Capture cupons fiscais para começar!</Text>
+          <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>Nenhum cupom cadastrado ainda.</Text>
+          <Text style={[styles.emptySubtext, { color: theme.colors.textSecondary }]}>Capture cupons fiscais para começar!</Text>
         </View>
       ) : (
         <FlatList
@@ -66,7 +68,7 @@ export default function CuponsScreen() {
           renderItem={renderCupom}
           keyExtractor={(item) => item.id || Math.random().toString()}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
           }
           contentContainerStyle={styles.listContent}
         />
@@ -78,14 +80,12 @@ export default function CuponsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     padding: 20,
     paddingBottom: 10,
-    color: '#333',
   },
   centerContainer: {
     flex: 1,
@@ -95,17 +95,15 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 10,
-    color: '#666',
+    fontSize: 14,
   },
   emptyText: {
     fontSize: 18,
-    color: '#666',
     textAlign: 'center',
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#999',
     textAlign: 'center',
   },
   listContent: {
@@ -113,39 +111,38 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   cupomCard: {
-    backgroundColor: '#f9f9f9',
-    padding: 16,
-    borderRadius: 8,
+    padding: 18,
+    borderRadius: 12,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   estabelecimento: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 8,
   },
   valor: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#007AFF',
-    marginBottom: 4,
+    marginBottom: 8,
   },
   data: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 4,
   },
   dataCupom: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 4,
   },
   categoria: {
     fontSize: 14,
-    color: '#666',
     fontStyle: 'italic',
+    marginTop: 4,
   },
 });
 

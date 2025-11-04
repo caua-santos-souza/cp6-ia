@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Button, RefreshControl } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import { generateFinancialInsights } from '../services/aiInsights';
 import { getCupons } from '../services/firestore';
 import { CupomFiscal } from '../types/Cupom';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function InsightsScreen() {
+  const { theme } = useTheme();
   const [insights, setInsights] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -35,28 +37,34 @@ export default function InsightsScreen() {
 
   return (
     <ScrollView 
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
       }
     >
       <View style={styles.content}>
-        <Text style={styles.title}>Insights Financeiros</Text>
-        <Text style={styles.subtitle}>Análises geradas por IA</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>Insights Financeiros</Text>
+        <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>Análises geradas por IA</Text>
 
         {loading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.loadingText}>Gerando insights...</Text>
+            <ActivityIndicator size="large" color={theme.colors.primary} />
+            <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Gerando insights...</Text>
           </View>
         ) : (
-          <View style={styles.insightsContainer}>
-            <Text style={styles.insightsText}>{insights}</Text>
+          <View style={[styles.insightsContainer, { backgroundColor: theme.colors.surface }]}>
+            <Text style={[styles.insightsText, { color: theme.colors.text }]}>{insights}</Text>
           </View>
         )}
 
         <View style={styles.buttonContainer}>
-          <Button title="Atualizar Insights" onPress={loadInsights} disabled={loading} />
+          <TouchableOpacity 
+            style={[styles.updateButton, { backgroundColor: theme.colors.primary }]}
+            onPress={loadInsights}
+            disabled={loading}
+          >
+            <Text style={styles.updateButtonText}>🔄 Atualizar Insights</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -66,7 +74,6 @@ export default function InsightsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     padding: 20,
@@ -75,11 +82,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#333',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
     marginBottom: 24,
   },
   loadingContainer: {
@@ -88,22 +93,37 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 10,
-    color: '#666',
+    fontSize: 14,
   },
   insightsContainer: {
-    backgroundColor: '#f0f8ff',
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 12,
     marginBottom: 20,
     minHeight: 200,
+    borderWidth: 1,
   },
   insightsText: {
     fontSize: 16,
-    lineHeight: 24,
-    color: '#333',
+    lineHeight: 26,
   },
   buttonContainer: {
     marginTop: 20,
+  },
+  updateButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  updateButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

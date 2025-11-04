@@ -1,12 +1,18 @@
 import { Stack } from 'expo-router';
+import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 
-export default function RootLayout() {
+function StackNavigator() {
+  const { theme } = useTheme();
+  
   return (
     <Stack
       screenOptions={{
-        headerTintColor: '#000000', // Cor preta para o botão de voltar e texto do header
+        headerTintColor: theme.colors.text,
         headerStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: theme.colors.background,
+        },
+        contentStyle: {
+          backgroundColor: theme.colors.background,
         },
       }}
     >
@@ -38,7 +44,29 @@ export default function RootLayout() {
           headerShown: true 
         }} 
       />
+      <Stack.Screen 
+        name="charts" 
+        options={{ 
+          title: 'Gráficos',
+          headerShown: true 
+        }} 
+      />
+      <Stack.Screen 
+        name="chatbot" 
+        options={{ 
+          title: 'Chatbot Financeiro',
+          headerShown: true 
+        }} 
+      />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <StackNavigator />
+    </ThemeProvider>
   );
 }
 
