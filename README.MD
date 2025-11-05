@@ -230,34 +230,5 @@ Obs: ajuste o `firebase.json` e `functions/package.json` conforme necessário.
 
 Incluímos no repositório exemplos reais de prompts usados e respostas observadas (adicione no diretório `docs/prompts/` se desejar armazenar exemplos).
 
-## Relatório técnico (o que incluir no repositório)
 
-No arquivo `report.md` (sugerido), documente:
-- Descrição da arquitetura e fluxos de dados.
-- Como e onde o AI Logic e o Gemini 2.5 Flash foram usados.
-- Prompts principais e rationale por trás deles.
-- Trechos de código que o Copilot auxiliou (com comentários/trechos).
-- Principais dificuldades e como foram resolvidas (ex.: parsing de textos, datas locais, ruído de OCR).
-
-## Observações de segurança e privacidade
-
-- Nunca exponha chaves de Service Account no cliente.
-- Trate dados sensíveis (PII) com cuidado; considere mascarar informações na UI.
-- Configure regras de Firestore e Storage adequadas antes de publicar.
-
-## Próximos passos / melhorias
-
-- Melhorar a TLP (Taxonomia de categorias) com ML supervisionado a partir de dados rotulados.
-- Implementar revisões manuais quando a confiança do OCR/classificação for baixa.
-- Criar chatbot financeiro interativo dentro do app (página `chatbot.tsx` já existe no projeto).
-- Notificações proativas para limites de gastos (usar `expo-notifications`).
-
----
-
-Se quiser, eu posso:
-- Gerar o código inicial para as Cloud Functions que chamam o AI Logic (com base na API dev).
-- Criar exemplos reais de prompts e armazená-los em `docs/`.
-- Adicionar um `report.md` com o relatório técnico solicitado.
-
-Indique qual desses extras você quer que eu gere agora.
 
