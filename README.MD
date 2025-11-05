@@ -85,7 +85,19 @@ Exemplo do documento salvo em Firestore (`cupons/{id}`):
 2. Habilite Firestore (modo start em teste durante o desenvolvimento) e Firebase Storage.
 3. Habilite a API do AI Logic conforme a documentação: https://firebase.google.com/docs/ai-logic
 4. Configure uma conta de serviço (Service Account) com permissões para AI Logic / Storage / Firestore para uso em Cloud Functions.
-5. No projeto frontend, adicione as configurações do Firebase em `firebaseConfig.ts` (já presente no repositório). Nunca comite chaves sensíveis.
+5. No projeto frontend, adicione as configurações do Firebase em `.env` neste modelo:
+
+```env
+# Firebase Configuration
+EXPO_PUBLIC_FIREBASE_API_KEY=<sua_api_key_aqui>
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=<seu_projeto.firebaseapp.com>
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=<seu_projeto_id>
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=<seu_projeto.appspot.com>
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<seu_sender_id>
+EXPO_PUBLIC_FIREBASE_APP_ID=<seu_app_id>
+```
+e coloque suas keys do firebase onde é requisitado.
+
 6. Configure regras de segurança do Firestore e Storage apropriadas antes do deploy.
 
 Obs: por segurança, chame AI Logic a partir de backend (Cloud Functions) usando a Service Account. Evite colocar chaves sensíveis no app cliente.
@@ -177,7 +189,7 @@ Observação: consulte a documentação oficial do Firebase AI Logic (https://fi
 
 Durante o desenvolvimento, o Copilot foi usado para:
 - Sugerir regex para extrair valores monetários e datas a partir do OCR.
-- Gerar boilerplate de Cloud Functions e handlers de erros.
+- Sugerir e otimizar trechos de código durante o desenvolvimento.
 - Propor prompts refinados para o Gemini (ex.: instruções de sistema e formatação da saída).
 
 Exemplo (registro no README): "Trecho X gerado com ajuda do Copilot: função `parseReceipt` — sugeriu a regex e testes de borda". Inclua comentários no código indicando onde o Copilot ajudou (ex.: `// sugerido pelo Copilot`).
