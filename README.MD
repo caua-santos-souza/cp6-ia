@@ -201,30 +201,25 @@ Pré-requisitos: Node.js (LTS), Expo CLI, Firebase CLI configurado e login com c
 Instalar dependências:
 
 ```powershell
-npm install
+npx expo install
+```
+crie um arquivo .env na pasta raiz do projeto com as keys do firebase:
+
+```env
+# Firebase Configuration
+EXPO_PUBLIC_FIREBASE_API_KEY=<sua_api_key_aqui>
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=<seu_projeto.firebaseapp.com>
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=<seu_projeto_id>
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=<seu_projeto.appspot.com>
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<seu_sender_id>
+EXPO_PUBLIC_FIREBASE_APP_ID=<seu_app_id>
 ```
 
 Iniciar o app (Expo):
 
 ```powershell
-npm run start
-npm run android  # ou npm run ios / npm run web
+npx expo start
 ```
-
-Executar emuladores do Firebase (opcional, para Functions/Firestore local):
-
-```powershell
-firebase emulators:start --only functions,firestore,storage
-```
-
-Deploy das Cloud Functions e regras:
-
-```powershell
-firebase deploy --only functions,firestore,storage
-```
-
-Obs: ajuste o `firebase.json` e `functions/package.json` conforme necessário.
-
 ## Testes rápidos
 
 - Upload manual de uma imagem de cupom e verificar se um documento aparece em `cupons` no Firestore.
