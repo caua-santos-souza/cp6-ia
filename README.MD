@@ -201,7 +201,7 @@ Pré-requisitos: Node.js (LTS), Expo CLI, Firebase CLI configurado e login com c
 Instalar dependências:
 
 ```powershell
-npx expo install
+npm install
 ```
 crie um arquivo .env na pasta raiz do projeto com as keys do firebase:
 
